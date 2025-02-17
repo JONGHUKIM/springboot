@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.itwill.springboot1.domain.Author;
+import com.itwill.springboot1.domain.Book;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,6 +22,11 @@ public class HomeController {
       
       LocalDateTime now = LocalDateTime.now(); //서버 현재 시간
       model.addAttribute("currentTime",now); // 뷰에 전달되는 데이터
+      
+      Author author = Author.builder().firstName("강").lastName("한").build();
+      Book book = Book.builder().id(100100).title("채식주의자").author(author).build();
+      
+      model.addAttribute("book", book);
       
       return "index";
       // 컨트롤러 메서드의 리턴 값(문자열) -> 뷰의 이름
