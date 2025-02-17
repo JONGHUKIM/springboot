@@ -5,7 +5,33 @@
       <title>Spring Boot 1</title>
    </head>
    <body>
+      <!-- thymeleaf fragment expressions: 
+          (src/main/resources/templates/) layout/header.html 파일에서 선언된 
+          myHeader 프래그먼트를 replace(교체) 방식으로 끼워넣기
+          div 태그 대신에서 프래그먼트의 태그(header)로 교체됨
+      -->
+      <div th:replace="~{/layout/header :: myHeader}"></div>
+   
       <h1>첫번째 스프링 부트 프로젝트</h1>
+      <!-- thymeleaf variable expressions: -->
       <h2 th:text="${currentTime}">현재 시간</h2>
+      <h3 th:text="${book}"></h3>
+      
+      <div>
+        ID: <span th:text="${book.id}"></span>
+        <br>
+        제목: <span th:text="${book.title}"></span>
+        <br>
+        저자: <span th:text="|${book.author.lastName}${book.author.firstName}|"></span>
+      </div>
+        <br>
+      <div th:object="${book}">
+        <!-- thymeleaf selection expressions -->
+        ID: <span th:text="*{id}"></span>
+        <br>
+        TITLE: <span th:text="*{title}"></span>
+        <br>
+        AUTHOR: <span th:text="|*{author.lastName}*{author.firstName}|"></span>
+      </div>
    </body>
 </html>
