@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <header th:fragment="myHeader">
-        <h1>HEADER</h1>
+    <header th:fragment="myHeader(title)">
+        <h1 th:text="${title}"></h1>
     </header>
     
-    <nav>
+    <nav th:fragment="navigation">
         <ul>
-            <li>Home</li>
+            <li>
+                <!-- thymeleaf link(URL) expressions -->
+                <a th:href="@{/}">Home</a>
+            </li>
+            <li>두번째 페이지</li>
         </ul>
     </nav>
 </html>

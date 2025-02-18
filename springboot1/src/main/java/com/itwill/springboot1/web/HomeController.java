@@ -1,6 +1,7 @@
 package com.itwill.springboot1.web;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,31 @@ public class HomeController {
       return "index";
       // 컨트롤러 메서드의 리턴 값(문자열) -> 뷰의 이름
       // 스프링 부트 프로젝트에서는 src/main/resources/templates/리턴값.html
+   }
+   
+   @GetMapping("/book/list")
+   public void bookList(Model model) {
+	   log.info("bookList()");
+	   
+	   // 도서목록을 저장할 ArrayList:
+	   ArrayList<Book> list = new ArrayList<Book>();
+	   String[] titles = {"육식주의자", "채식주의자", "잡식주의자", "음식주의자", "지식주의자"};
+	   
+	   // list에 Book 타입 객체를 5개 저장
+	   for (int i = 0; i < titles.length; i++) {
+		   
+		   Author author = Author.builder().firstName("강" + (i == 0 ? "" : i)).lastName("한").build();
+		   
+		   Book book = Book.builder().id(i + 1).title(titles[i]).author(author).build();
+		   
+		   list.add(book);
+		   
+	   }
+	   // list를 뷰에 전달
+	   model.addAttribute("book", list);
+	   // 뷰(html) 작성
+	   
+	   
    }
    
 }

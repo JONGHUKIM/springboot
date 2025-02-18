@@ -9,8 +9,16 @@
           (src/main/resources/templates/) layout/header.html 파일에서 선언된 
           myHeader 프래그먼트를 replace(교체) 방식으로 끼워넣기
           div 태그 대신에서 프래그먼트의 태그(header)로 교체됨
+          div 태그 안에 프래그먼트 nav 태그가 삽입되는 방식
       -->
-      <div th:replace="~{/layout/header :: myHeader}"></div>
+      <div th:replace="~{/layout/header :: myHeader('인덱스 페이지')}"></div>
+   
+      <!-- thymeleaf fragment expressions: 
+        /layout/header.html 파일에서 선언된 navigation 프래그먼트를 insert(삽입)
+        방식으로 끼워 넣기
+      -->
+      <div th:insert="~{/layout/header :: navigation}"></div>
+      
    
       <h1>첫번째 스프링 부트 프로젝트</h1>
       <!-- thymeleaf variable expressions: -->
@@ -33,5 +41,14 @@
         <br>
         AUTHOR: <span th:text="|*{author.lastName}*{author.firstName}|"></span>
       </div>
+      
+      <ul>
+        <li>
+            <!-- thymeleaf link(url) expressions -->
+            <a th:href="@{/book/list}">도서 목록</a>
+            
+        </li>
+      </ul>
+      
    </body>
 </html>
