@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>Book list</title>
+		<title>Spring Boot 1</title>
 	</head>
 	<body>
 	
-    <table border = 1>
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>저자</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each= "book : ${book}">
-                <td th:text="${book.id}"></td>
-                <td th:text="${book.title}"></td>
-                <td th:text="${book.author.lastName} + ${book.author.firstName}"></td>
-            </tr>
-        </tbody>
-    </table>
+	<div th:replace="~{/layout/header :: myHeader('도서 목록 페이지')}"></div>
+	<div th:insert="~{/layout/header :: navigation}"></div>
+	
+	<main>
+	    <table border = 1>
+	        <thead>
+	            <tr>
+	                <th>번호</th>
+	                <th>제목</th>
+	                <th>저자</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr th:each= "book : ${book}" th:object="${book}"  >
+	                <td th:text="*{id}"></td>
+	                <td th:text="*{title}"></td>
+	                <td th:text="*{author != null } ? |*{author.lastName} *{author.firstName}| : 'NULL'"></td>
+	                <!-- (조건식) ? T : F -->
+	            </tr>
+	        </tbody>
+	    </table>
+	</main>
 	
 	</body>
 </html>

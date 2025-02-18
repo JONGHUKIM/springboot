@@ -26,7 +26,6 @@ public class HomeController {
       
       Author author = Author.builder().firstName("강").lastName("한").build();
       Book book = Book.builder().id(100100).title("채식주의자").author(author).build();
-      
       model.addAttribute("book", book);
       
       return "index";
@@ -52,6 +51,10 @@ public class HomeController {
 		   list.add(book);
 		   
 	   }
+	   
+	   // author가 null인 book 객체를 리스트에 추가
+	   list.add(Book.builder().id(123).title("구식주의자").build());
+	   
 	   // list를 뷰에 전달
 	   model.addAttribute("book", list);
 	   // 뷰(html) 작성

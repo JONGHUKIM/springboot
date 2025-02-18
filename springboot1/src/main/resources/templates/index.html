@@ -46,7 +46,10 @@
         <li>
             <!-- thymeleaf link(url) expressions -->
             <a th:href="@{/book/list}">도서 목록</a>
-            
+        </li>
+        <li>
+            <!-- Thymeleaf link expressions에서 queryString(질의 문자열)을 작성하는 방법 -->
+            <a th:href="@{/book/list/details(id=1)}">도서 1 상세페이지</a>
         </li>
       </ul>
       
