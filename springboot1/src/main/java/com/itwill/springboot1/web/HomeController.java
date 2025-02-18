@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.itwill.springboot1.domain.Author;
 import com.itwill.springboot1.domain.Book;
@@ -60,6 +61,32 @@ public class HomeController {
 	   // 뷰(html) 작성
 	   
 	   
+   }
+   
+   @GetMapping("/book/details")
+   public void details(Integer id, Model model) {
+	   // Window → preference → JAVA → Compiler → Store information about method parameters 체크 
+	   // @RequestParm 애너테이션을 생략할 수 있음
+	   log.info("details(id={})", id);
+	   
+	   Book book = Book.builder().id(id).title("무제").build();
+	   model.addAttribute("book", book);
+	   
+   }
+   
+   @GetMapping("/book/details/{id}")
+   public String bookDetails(@PathVariable Integer id, Model model) {
+	   // Window → preference → JAVA → Compiler → Store information about method parameters 체크 
+	   // @PathVariable 애너테이션에서 name속성을 생략할 수 있음
+	   // ex) @@PathVariable(name ="id") -> @@PathVariable
+	   log.info("bookDetails(id={})", id);
+	   
+	   Book book = Book.builder().id(id).title("채식주의자").build();
+	   
+	   model.addAttribute("book", book);
+	   
+	   return "book/details";
+	   // -> 뷰 이름: src/main/resources/templates/book/details.html
    }
    
 }
