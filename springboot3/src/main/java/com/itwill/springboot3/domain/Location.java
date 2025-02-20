@@ -6,8 +6,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,24 +17,21 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(name = "DEPARTMENTS")
-public class Department {
+@Table(name = "LOCATIONS")
+public class Location {
 	
 	@Id
-	@Column(name = "DEPARTMENT_ID")
+	@Column(name = "LOCATION_ID")
 	private Integer id;
 	
-	private String departmentName;
-	
-	@ToString.Exclude
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MANAGER_ID")
-	private Employee manager;
+	private String streetAddress;
+	private String postalCode;
+	private String city;
+	private String stateProvince;
 	
 	@ToString.Exclude
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LOCATION_ID")
-	private Location location;
-	
+	@JoinColumn(name = "COUNTRY_ID")
+	private Country country;
 
 }
