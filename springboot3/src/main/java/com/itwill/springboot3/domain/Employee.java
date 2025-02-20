@@ -46,13 +46,13 @@ public class Employee {
 	@ToString.Exclude
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MANAGER_ID")
-	private Integer managerId;
+	private Employee manager;
 	
 	// TODO Department 엔터티 선언, 엔터티 관계맺기
 	@ToString.Exclude
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DEPARTMENT_ID")
-	private Integer departmentId;
+	private Department department;
 	
 	
 }
