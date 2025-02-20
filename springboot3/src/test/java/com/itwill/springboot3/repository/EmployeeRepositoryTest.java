@@ -18,6 +18,7 @@ public class EmployeeRepositoryTest {
 	@Test
 	public void testDependencyInjection() {
 		assertThat(empRepo).isNotNull();
+		log.info("empRepo = {}",empRepo);
 	}
 
 }
