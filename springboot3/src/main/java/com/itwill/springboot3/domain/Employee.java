@@ -41,7 +41,17 @@ public class Employee {
 	
 	private Double salary;
 	private Double commissionPct;
+	
+	// TODO 엔터티 관계맺기
+	@ToString.Exclude
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MANAGER_ID")
 	private Integer managerId;
+	
+	// TODO Department 엔터티 선언, 엔터티 관계맺기
+	@ToString.Exclude
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "DEPARTMENT_ID")
 	private Integer departmentId;
 	
 	
