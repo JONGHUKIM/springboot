@@ -2,6 +2,10 @@ package com.itwill.springboot3.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -22,11 +26,18 @@ public class DepartmentService {
    private final DepartmentRepository deptRepo;
    private final EmployeeRepository empRepo;
    
-   public List<Department> read(){
-      log.info("read()");
-      List<Department> list = deptRepo.findAll();
+   public Page<Department> read(int pageNo, Sort sort){
+      log.info("read(pageNo={}, sort={})", pageNo, sort);
       
-      return list;
+      Pageable pageable = PageRequest.of(pageNo, 10, sort);
+      
+      Page<Department> page = deptRepo.findAll(pageable);
+		log.info("previous = {}", page.hasPrevious()); // 이전 페이지가 있는 지 여부
+		log.info("next = {}", page.hasNext()); // 다음 페이지가 있는 지 여부 
+		log.info("number = {}", page.getNumber()); // 현재 페이지(슬라이스) 번호 번호(0부터 시작)
+		log.info("Total pages = {} ", page.getTotalPages()); // 전체 페이지 수 
+      
+      return page;
    }
    
    public DepartmentDetailsDto read(Integer id) {

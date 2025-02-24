@@ -15,7 +15,7 @@
 	           </tr>
 	       </thead>
 	       <tbody>
-	           <tr th:each="dept : ${departments}" th:object="${dept}">
+	           <tr th:each="dept : ${page}" th:object="${dept}">
                    <td>
                        <a th:href="@{/dept/details/{id}(id=*{id})}" th:text="*{id}"></a>
                    </td>
@@ -32,5 +32,7 @@
 	           </tr>
 	       </tbody>
 	   </table>
+	   
+	   <th:block th:replace="~{/layout/fragments :: pagination}"></th:block>
 	</main>
 </html>
