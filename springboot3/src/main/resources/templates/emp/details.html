@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{/layout/fragments :: htmlHead('직원 상세')}"></head>
+    <body>
+        <th:block th:replace="~{/layout/fragments :: pageHeader('직원 상세 페이지')}"></th:block>
+    </body>
+    <main class="mt-2">
+        <div class="card card-body">
+            <table class="table table-hover">
+                <tbody th:object="${employee}">
+                    <tr>
+                        <th>사번</th>
+                        <td th:text="*{id}"></td>
+                    </tr>
+                    <tr>
+                        <th>이름</th>
+                        <td th:text="|*{firstName} *{lastName}|"></td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td th:text="*{email}"></td>
+                    </tr>
+                    <tr>
+                        <th>전화번호</th>
+                        <td th:text="*{phoneNumber}"></td>
+                    </tr>
+                    <tr>
+                        <th>입사일</th>
+                        <td th:text="*{hireDate}"></td>
+                    </tr>
+                    <tr>
+                        <th>업무</th>
+                        <td th:text="*{job.jobTitle}"></td>
+                    </tr>
+                    <tr>
+                        <th>급여</th>
+                        <td th:text="*{salary}"></td>
+                    </tr>
+                    <tr>
+                        <th>수당</th>
+                        <td th:text="*{commissionPct}"></td>
+                    </tr>
+                    <tr>
+                        <th>매니저</th>
+                        <td>
+                            <th:block th:if="*{manager != null}">
+                                <a th:href="@{/emp/details/{id}(id=*{manager.id})}" th:text="|*{manager.firstName} *{manager.lastName}|"></a>
+                            </th:block>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>부서</th>
+                        <td>
+                            <th:block th:if="*{department != null}">
+                                <a th:href="@{/dept/details/{id}(id=*{department.id})}" th:text="*{department.departmentName}"></a>
+                            </th:block>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{/layout/fragments :: htmlHead('부서 목록')}"></head>
+	<body>
+		<th:block th:replace="~{/layout/fragments :: pageHeader('부서 목록 페이지')}"></th:block>
+	</body>
+	<main>
+	   <table class="table table-hover">
+	       <thead>
+	           <tr>
+	               <th>번호</th>
+	               <th>이름</th>
+	               <th>매니저</th>
+	               <th>위치</th>
+	           </tr>
+	       </thead>
+	       <tbody>
+	           <tr th:each="dept : ${departments}" th:object="${dept}">
+                   <td>
+                       <a th:href="@{/dept/details/{id}(id=*{id})}" th:text="*{id}"></a>
+                   </td>
+	               <td>
+	                   <a th:href="@{/dept/details/{id}(id=*{id})}" th:text="*{departmentName}"></a>
+	               </td>
+	               <td>
+	                   <th:block th:if="*{manager != null}">
+	                       <a th:href="@{/emp/details/{id}(id=*{manager.id})}" 
+	                           th:text="|*{manager.firstName} *{manager.lastName}|"></a>
+	                   </th:block>
+	               </td>
+	               <td th:text="*{location.id}"></td>
+	           </tr>
+	       </tbody>
+	   </table>
+	</main>
+</html>
