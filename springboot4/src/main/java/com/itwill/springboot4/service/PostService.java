@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.springboot4.domain.Post;
+import com.itwill.springboot4.dto.PostCreateItemDto;
 import com.itwill.springboot4.dto.PostListItemDto;
 import com.itwill.springboot4.repository.PostRepository;
 
@@ -34,5 +35,13 @@ public class PostService {
 		
 		return page;
 	}
+	
+	public Post create(PostCreateItemDto dto) {
+        log.info("create(dto={})", dto);
+        Post entity = dto.toEntity();
+        postRepo.save(entity);
+        
+        return entity;
+    }
 
 }
