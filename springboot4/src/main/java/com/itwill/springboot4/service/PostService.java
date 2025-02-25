@@ -1,13 +1,14 @@
 package com.itwill.springboot4.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.springboot4.domain.Post;
+import com.itwill.springboot4.dto.PostListItemDto;
 import com.itwill.springboot4.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,19 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 public class PostService {
 	
 	private final PostRepository postRepo;
-
-	public Page<Post> read(int pageNo, Sort sort) {
+	
+	@Transactional(readOnly = true)
+	public Page<PostListItemDto> read(int pageNo, Sort sort) {
 		log.info("read(pageNo={}, sort={})", pageNo, sort);
 		
+		// 한 페이지에 10개씩 보여줌.
 		Pageable pageable = PageRequest.of(pageNo, 10, sort);
+		Page<Post> list = postRepo.findAll(pageable);
 		
-		Page<Post> page = postRepo.findAll(pageable);
-		log.info("previous = {}", page.hasPrevious()); // 이전 페이지가 있는 지 여부
-		log.info("next = {}", page.hasNext()); // 다음 페이지가 있는 지 여부 
-		log.info("number = {}", page.getNumber()); // 현재 페이지(슬라이스) 번호 번호(0부터 시작)
-		log.info("Total pages = {} ", page.getTotalPages()); // 전체 페이지 수 
+		// Page<Post> 타입 객체를 Page<PostListItemDto> 타입 객체로 변환.
+		Page<PostListItemDto> page = list.map(PostListItemDto::fromEntity);
 		
 		return page;
 	}
-	
+
 }
