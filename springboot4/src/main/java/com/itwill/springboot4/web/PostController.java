@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,15 @@ public class PostController {
 		
 		// 포스트 목록 페이지로 이동(redirect)
 		return "redirect:/post/list";
+	}
+	
+	@GetMapping("/details/{id}")
+	public String details(@PathVariable Long id, Model model) {
+		log.info("details(id={})", id);
+		
+		// TODO: 서비스 메서드 호출, 아이디로 검색하기
+		
+		return "post/details";
 	}
 
 }
