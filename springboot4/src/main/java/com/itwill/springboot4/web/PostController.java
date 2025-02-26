@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwill.springboot4.domain.Post;
 import com.itwill.springboot4.dto.PostCreateDto;
 import com.itwill.springboot4.dto.PostListItemDto;
+import com.itwill.springboot4.dto.PostUpdateDto;
 import com.itwill.springboot4.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -72,6 +73,17 @@ public class PostController {
 		postService.delete(id);
 		
 		return "redirect:/post/list";
+		
+	}
+	
+	@PostMapping("/update")
+	public String update(PostUpdateDto dto) {
+		log.info("update(dto={})", dto);
+		
+		postService.update(dto);
+		log.info("업데이트된 엔터티 id = {}", dto.getId());
+		
+		return "redirect:/post/details?id="+ dto.getId();
 		
 	}
 	

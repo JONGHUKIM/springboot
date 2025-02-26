@@ -4,11 +4,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 삭제 버튼을 찾음
+    // 삭제, 업데이트 버튼을 찾음
     const updateForm = document.querySelector('#updateForm');
     const id = document.querySelector('#id');
-    const title = document.querySelector('#title');
-    const content = document.querySelector('#content');
+    const title = document.querySelector('#title').value.trim();
+    const content = document.querySelector('#content').value.trim();
+    // string.trim(): 문자열 시작과 끝에 있는 모든 공백을 제거
     const btnDelete = document.querySelector('#btnDelete');
     const btnUpdate = document.querySelector('#btnUpdate');
     // 삭제 버튼에 'click' 이벤트 리스너를 설정
@@ -23,5 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
             location.href = `/post/delete?id=${postId}`;
         }
     });
+    
+    // 업데이트 버튼에 'click' 이벤트 리스너를 설정
+    btnUpdate.addEventListener('click', () => {
+         // 제목과 내용이 비어있는지 확인
+     if (title.value === '' || content === '' ) {
+         alert('제목과 내용은 반드시 입력하세요.');
+         return;
+     }
+     
+      const check = confirm('변경된 내용을 저장할까요?');
+      if (check) {       
+          updateForm.method = 'post';
+          updateForm.action = 'update';
+          updateForm.submit();
+      }
+      
+     });
     
 });
