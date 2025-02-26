@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwill.springboot4.domain.Post;
 import com.itwill.springboot4.dto.PostCreateDto;
 import com.itwill.springboot4.dto.PostListItemDto;
 import com.itwill.springboot4.service.PostService;
@@ -51,13 +52,17 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
-	@GetMapping("/details/{id}")
-	public String details(@PathVariable Long id, Model model) {
+	@GetMapping({"/details", "/modify"})
+	public void details(Long id, Model model) {
 		log.info("details(id={})", id);
 		
-		// TODO: 서비스 메서드 호출, 아이디로 검색하기
+		// 서비스 메서드 호출, 아이디로 검색
+		Post entity = postService.read(id);
+		model.addAttribute("post", entity);
 		
-		return "post/details";
+		// 리턴 타입이 void이기 때문에 요청 주소에 따라서 뷰의 이름이 달라짐
+		// 요청 주소가 details인 경우는 details.html
+		// 요청 주소가 modify인 경우는 mnodify.html
 	}
 
 }

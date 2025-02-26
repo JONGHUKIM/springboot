@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{/layout/fragments :: htmlHead('Post Details')}"></head>
-	<body>
-		<th:block th:replace="~{/layout/fragments :: pageHeader('포스트 상세 페이지')}"></th:block>
-		
-		<main></main>
-		
-		<th:block th:replace="~{/layout/fragments :: bootstrapJS}"></th:block>
-		
-	</body>
+    <head th:replace="~{/layout/fragments :: htmlHead('Post Details')}"></head>
+    <body>
+        <th:block th:replace="~{/layout/fragments :: pageHeader('포스트 상세 페이지')}"></th:block>
+        
+        <main>
+            <div class="mt-2 card" th:object="${post}">
+                <div class="card-body">
+                    <form>
+                        <div class="mt-2">
+                            <label class="form-label" for="id">번호</label>
+                            <input type="text" class="form-control" id="id" 
+                                th:value="*{id}" readonly />
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label" for="title">제목</label>
+                            <input type="text" class="form-control" id="title" 
+                                th:value="*{title}" readonly />
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label" for="content">내용</label>
+                            <textarea rows="5" class="form-control" id="content"
+                                th:text="*{content}" readonly></textarea>
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label" for="author">작성자</label>
+                            <input type="text" class="form-control" id="author" 
+                                th:value="*{author}" readonly />
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label" for="createdTime">작성시간</label>
+                            <input type="text" class="form-control" id="createdTime" 
+                                th:value="*{#temporals.format(createdTime, 'yyyy-MM-dd HH:mm:ss')}" readonly />
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label" for="modifiedTime">수정시간</label>
+                            <input type="text" class="form-control" id="modifiedTime" 
+                                th:value="*{#temporals.format(modifiedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly />
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-success form-control"
+                        th:href="@{/post/modify(id=*{id})}">수정하기</a>
+                </div>
+            </div>
+        </main>
+        
+        <th:block th:replace="~{/layout/fragments :: bootstrapJS}"></th:block>
+    </body>
 </html>

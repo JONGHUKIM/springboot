@@ -21,8 +21,8 @@
                         <tbody>
                             <tr th:each="post : ${page}" th:object="${post}">
                                 <td th:text="*{id}"></td>
-                                <td> <!-- 쿼리 스트링 @{/post/details(id=*{id})} -->
-                                    <a th:href="@{/post/details/{id}(id=*{id})}" 
+                                <td> <!-- 패스 베리어블 @{/post/details/{id}(id=*{id})} -->
+                                    <a th:href="@{/post/details(id=*{id})}" 
                                         th:text="*{title}"></a>
                                 </td>
                                 <td>
