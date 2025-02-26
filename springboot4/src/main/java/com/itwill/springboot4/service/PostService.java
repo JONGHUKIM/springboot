@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwill.springboot4.domain.Post;
 import com.itwill.springboot4.dto.PostCreateDto;
 import com.itwill.springboot4.dto.PostListItemDto;
+import com.itwill.springboot4.dto.PostSearchDto;
 import com.itwill.springboot4.dto.PostUpdateDto;
 import com.itwill.springboot4.repository.PostRepository;
 
@@ -78,6 +79,31 @@ public class PostService {
 		// DB에서 검색한 엔터티의 필드(들)이 변경되면, CrudeRepository<T, ID>.save(entity) 메서드가 자동으로 호출
 		// update 쿼리가 자동으로 실행
 		// @Transactional 애너테이션이 없는 경우에는 save() 메서드를 직접 호출해야 됨
+	}
+
+	@Transactional(readOnly = true)
+	public Page<PostListItemDto> search(PostSearchDto dto, Sort sort) {
+		log.info("search(dto={}, sort={})", dto, sort);
+		
+		Pageable pageable = PageRequest.of(dto.getP(), 10, sort);
+		Page<Post> result = null;
+		switch (dto.getCategory()) {
+		case "t":
+			result = postRepo.findByTitleContainingIgnoreCase(dto.getKeyword(), pageable);
+			break;
+		case "c":
+			result = postRepo.findByContentContainingIgnoreCase(dto.getKeyword(), pageable);
+			break;
+		case "tc":
+			result = postRepo.findByTitleOrContent(dto.getKeyword(), pageable);
+			break;
+		case "a":
+			result = postRepo.findByAuthorContainingIgnoreCase(dto.getKeyword(), pageable);
+			break;
+		}
+		log.info("검색 결과 전체 페이지 수 = {}", result.getTotalPages());
+		
+		return result.map(PostListItemDto::fromEntity);
 	}
 
 }
