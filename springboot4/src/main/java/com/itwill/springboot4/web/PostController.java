@@ -64,5 +64,17 @@ public class PostController {
 		// 요청 주소가 details인 경우는 details.html
 		// 요청 주소가 modify인 경우는 mnodify.html
 	}
+	
+	@GetMapping("/delete")
+	public String delete(Long id) {
+		log.info("delete(id={})", id);
+		
+		postService.delete(id);
+		
+		return "redirect:/post/list";
+		
+	}
+	
+	
 
 }
