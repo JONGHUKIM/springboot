@@ -39,5 +39,16 @@ public class CommentService {
 		
 		return entity;
 	}
+	
+	// 댓글 아이디(PK)로 댓글 1개를 검색하는 서비스
+	@Transactional(readOnly = true)
+	public Comment read(Long id) {
+		log.info("read(id={})", id);
+		
+		Comment entity = commentRepo.findById(id).orElseGet(() -> null);
+		log.info("댓글 = {}", entity);
+		
+		return entity;
+	}
 
 }

@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentRegisterDto {
 
+	private Long postId;
 	private String text;
 	private String writer;
-	private Long postId;
+	
 	
 }
