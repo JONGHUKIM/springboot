@@ -1,5 +1,9 @@
 package com.itwill.springboot4.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +53,20 @@ public class CommentService {
 		log.info("댓글 = {}", entity);
 		
 		return entity;
+	}
+	
+	// 댓글 목록 가져오기 서비스
+	@Transactional(readOnly = true)
+	public Page<Comment> read(Long postId, int pageNo, Sort sort) {
+		log.info("read(postId={}, pageNo={}, sort={})", postId, pageNo, sort);
+		
+		Pageable pageable = PageRequest.of(pageNo, 5, sort);
+		
+//		Post post = postRepo.findById(postId).orElseThrow();
+//		Page<Comment> page = commentRepo.findByPost(post, pageable);
+		Page<Comment> page = commentRepo.findByPostId(postId, pageable);
+		
+		return page;
 	}
 
 }
