@@ -47,6 +47,44 @@
             </div>
         </main>
         
+        <div class="mt-2 card">
+            <div class="card-header">
+                <button class="btn btn-outline-secondary"
+                    id="btnToggle" data-toggle="collapse">댓글 보기</button>
+            </div>
+            <div class="card-body collapse" id="collapseComments">
+                <div class="row">
+                    <div class="col-10">
+                        <textarea class="form-control" id="commentText" rows="3"
+                            placeholder="댓글 입력"></textarea>
+                        <input class="d-none" id="commentWriter"
+                            value="admin" readonly />
+                            <!-- TODO: 나중에 로그인 사용자 이름으로 변경 -->
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-outline-success form-control"
+                            id="btnRegisterComment">등록</button>
+                    </div>
+                </div>
+                
+                <!-- 댓글 목록 -->
+                <div class="mt-2" id="divComments"></div>
+                
+                <!-- 댓글 목록 페이지 더보기 버튼 -->
+                <div class="mt-2 d-flex justify-content-center" id="divMore">
+                    <button class="btn btn-outline-secondary" id="btnMore">더보기</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bootstrap JavaScript -->
         <th:block th:replace="~{/layout/fragments :: bootstrapJS}"></th:block>
+        
+        <!-- Ajax를 사용하기 위한 Axios JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        
+        <!-- 댓글 등록/수정/삭제/목록 보기 기능 JavaScript -->
+        <script th:src="@{/js/comments.js}"></script>
+        
     </body>
 </html>
