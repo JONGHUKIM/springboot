@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import com.itwill.springboot4.domain.Comment;
 import com.itwill.springboot4.dto.CommentRegisterDto;
+import com.itwill.springboot4.dto.CommentUpdateDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,27 +20,27 @@ public class CommentServiceTest {
 
 	@Autowired
 	private CommentService commentService;
-	
-	//@Test
+
+	// @Test
 	public void testCreateComment() {
 		CommentRegisterDto dto = new CommentRegisterDto(53L, "댓글 입력1", "admin");
 		Comment entity = commentService.create(dto);
 	}
-	
-	//@Test
+
+	// @Test
 	public void testReadById() {
-		// 댓글 아이디가 DB에 있는 경우 
+		// 댓글 아이디가 DB에 있는 경우
 		Comment comment1 = commentService.read(21L);
 		assertThat(comment1).isNotNull();
 		log.info("comment1 = {}", comment1);
-		
+
 		// 댓글 아이디가 DB에 없는 경우
 		Comment comment2 = commentService.read(10L);
 		assertThat(comment2).isNull();
-		log.info("comment2 = {}",comment2);
+		log.info("comment2 = {}", comment2);
 	}
-	
-	//@Test
+
+	// @Test
 	public void makeDummyComments() {
 		for (int i = 1; i <= 10; i++) {
 			CommentRegisterDto dto = new CommentRegisterDto(53L, "댓글 놀이 #" + i, "admin");
@@ -47,11 +48,26 @@ public class CommentServiceTest {
 			assertThat(entity).isNotNull();
 		}
 	}
-	
-	@Test
+
+	// @Test
 	public void testReadByPostId() {
 		Page<Comment> page = commentService.read(53L, 1, Sort.by("id").descending());
 		page.forEach(System.out::println);
 	}
+
+	//@Test
+	public void testDeleteByCommentId() {
+		commentService.delete(32L);
+
+	}
 	
+	@Test
+	public void testUpdate() {
+		CommentUpdateDto dto = new CommentUpdateDto();
+		dto.setId(30L);
+		dto.setText("안녕안녕수정이야");
+		
+		commentService.update(dto);
+	}
+
 }

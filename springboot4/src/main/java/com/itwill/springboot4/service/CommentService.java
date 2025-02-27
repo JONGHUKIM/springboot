@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itwill.springboot4.domain.Comment;
 import com.itwill.springboot4.domain.Post;
 import com.itwill.springboot4.dto.CommentRegisterDto;
+import com.itwill.springboot4.dto.CommentUpdateDto;
 import com.itwill.springboot4.repository.CommentRepository;
 import com.itwill.springboot4.repository.PostRepository;
 
@@ -62,11 +63,31 @@ public class CommentService {
 		
 		Pageable pageable = PageRequest.of(pageNo, 5, sort);
 		
-//		Post post = postRepo.findById(postId).orElseThrow();
-//		Page<Comment> page = commentRepo.findByPost(post, pageable);
-		Page<Comment> page = commentRepo.findByPostId(postId, pageable);
+		Post post = postRepo.findById(postId).orElseThrow();
+		Page<Comment> page = commentRepo.findByPost(post, pageable);
+//		Page<Comment> page = commentRepo.findByPostId(postId, pageable);
 		
 		return page;
+	}
+	
+	// 댓글 삭제 서비스
+	@Transactional
+	public void delete(Long commentId) {
+		log.info("delete(commentId = {})", commentId);
+		
+		commentRepo.deleteById(commentId);
+	}
+	
+	// 댓글 업데이트 서비스
+	@Transactional // 엔터티의 필드가 변경되면 save() 메서드가 실행되도록 하기 위해
+	public void update(CommentUpdateDto dto) {
+		log.info("update(dto = {})", dto);
+		
+		// 아이디로 댓글 엔터티를 검색
+		Comment entity = commentRepo.findById(dto.getId()).orElseThrow();
+		
+		// 검색된 엔터티의 필드를 업데이트
+		entity.update(dto.getText());
 	}
 
 }
