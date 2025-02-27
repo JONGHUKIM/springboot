@@ -63,8 +63,12 @@ public class CommentService {
 		
 		Pageable pageable = PageRequest.of(pageNo, 5, sort);
 		
+		// (1) 컨트롤에서 Page<T> 객체를 직렬화할 때 에러를 없애기 위해서
 		Post post = postRepo.findById(postId).orElseThrow();
 		Page<Comment> page = commentRepo.findByPost(post, pageable);
+		
+		// (2) Comment의 Post 필드가 LAZY fetch 타입이어서
+		// 컨트롤러에서 Page<T> 객체를 직렬화할 때 에러가 발생할 수 있음
 //		Page<Comment> page = commentRepo.findByPostId(postId, pageable);
 		
 		return page;
