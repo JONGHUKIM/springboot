@@ -23,50 +23,49 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestController
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/api/comment")
 public class CommentController {
-
+	
 	private final CommentService commentService;
-
+	
 	@GetMapping("/all/{postId}")
 	public ResponseEntity<PagedModel<Comment>> getCommentList(@PathVariable Long postId,
 			@RequestParam(name = "p", defaultValue = "0") int pageNo) {
 		log.info("getCommentList(postId={}, pageNo={})", postId, pageNo);
-
-		// 서비스 메서드를 호출해서 최종 수정 시간의 내림차순으로 정렬된,
+		
+		// 서비스 메서드를 호출해서 최종 수정 시간의 내림차순으로 정렬된
 		// 한 페이지에 출력할 댓글 목록을 가져옴.
 		Page<Comment> page = commentService.read(postId, pageNo, Sort.by("modifiedTime").descending());
-		log.info("페이지 개수 = {}", page.getTotalPages());
+		log.info("페이지 수 = {}", page.getTotalPages());
 		log.info("페이지 번호 = {}", page.getNumber());
-		log.info("getSize 확인 = {}", page.getSize());
-		log.info("댓글 개수 = {}", page.getNumberOfElements());
-
+		log.info("현재 페이지의 댓글 개수 = {}", page.getNumberOfElements());
+		
 		return ResponseEntity.ok(new PagedModel<>(page));
-		// JSON 직렬화의 안정성을 위해서 Page<T> 객체 대신에 PagedModel<T>을 클라이언트로 응답을 보냄
-
+		// JSON 직렬화의 안정성을 위해서 Page<T> 객체 대신에 PagedModel<T>을 클라이언트로 응답을 보냄.
 	}
-
-	@PostMapping()
+	
+	@PostMapping
 	public ResponseEntity<Comment> registerComment(@RequestBody CommentRegisterDto dto) {
-		log.info("registerComment(dto = {})", dto);
-
+		log.info("registerComment(dto={})", dto);
+		
 		Comment entity = commentService.create(dto);
-
+		
 		return ResponseEntity.ok(entity);
 	}
-
+	
 	@PutMapping("/{commentId}")
-	public ResponseEntity<Long> updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateDto dto) {
-		log.info("updateComment(commentId = {}, dto={})", commentId, dto);
-
+	public ResponseEntity<Long> updateComment(@PathVariable Long commentId,
+			@RequestBody CommentUpdateDto dto) {
+		log.info("updateComment(commentId={}, dto={})", commentId, dto);
+		
 		dto.setId(commentId);
 		commentService.update(dto);
 		
-		return ResponseEntity.ok(commentId); // 업데이트한 댓글의 아이디를 응답으로 보냄
+		return ResponseEntity.ok(commentId); // 업데이트한 댓글의 아이디를 응답으로 보냄.
 	}
-	
+
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<Long> deleteComment(@PathVariable Long commentId) {
 		log.info("deleteComment(commentId={})", commentId);
@@ -75,5 +74,5 @@ public class CommentController {
 		
 		return ResponseEntity.ok(commentId);
 	}
-
+	
 }
