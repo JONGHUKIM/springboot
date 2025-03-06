@@ -80,11 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     */
     function makeCommentElements({ content, page }) {
+        // 로그인 사용자 아이디 -> 댓글 삭제/수정 버튼을 만들지 여부를 결정하기 위해서
+        const authUser = document.querySelector('span#authenticatedUser').innerText;
+        
         // 댓글 목록을 추가할 div 요소
         const divComments = document.querySelector('div#divComments');
-        
+
         // div에 삽입할 HTML 문자열(댓글 목록)
         let htmlStr = '';
+        
         for (const comment of content) {
             htmlStr += `
             <div class="mt-2 card card-body">
@@ -96,13 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mt-2">
                         <textarea class="commentText form-control" 
                             data-id="${comment.id}">${comment.text}</textarea>
-                    </div>
+                    </div> `;
+                    
+                    if (authUser === comment.writer) { 
+                        htmlStr += ` 
                     <div class="mt-2">
                         <button class="btnDelete btn btn-sm btn-outline-danger"
                             data-id="${comment.id}">삭제</button>
                         <button class="btnUpdate btn btn-sm btn-outline-primary"
                             data-id="${comment.id}">수정</button>
-                    </div>
+                    </div> `; }
+                    
+                    htmlStr += `
                 </div>
             </div>
             `;
@@ -121,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /*
         for (const btn of btnDeletes) {
             btn.addEventListener('click', deleteComment);
-        }
+        } 
         */
         btnDeletes.forEach((btn) => btn.addEventListener('click', deleteComment));
         
