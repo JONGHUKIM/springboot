@@ -40,7 +40,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="card-footer">
+                <!-- 작성자와 로그인 사용자가 일치하는 경우에만 [수정] 버튼을 보여줌 -->
+                <div class="card-footer" th:if="*{author eq #authentication.name}">
                     <a class="btn btn-success form-control"
                         th:href="@{/post/modify(id=*{id})}">수정하기</a>
                 </div>
@@ -58,8 +59,8 @@
                         <textarea class="form-control" id="commentText" rows="3"
                             placeholder="댓글 입력"></textarea>
                         <input class="d-none" id="commentWriter"
-                            value="admin" readonly />
-                            <!-- TODO: 나중에 로그인 사용자 이름으로 변경 -->
+                            th:value="${#authentication.name}" readonly />
+                            
                     </div>
                     <div class="col-2">
                         <button class="btn btn-outline-success form-control"

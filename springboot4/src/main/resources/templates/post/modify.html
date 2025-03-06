@@ -25,7 +25,9 @@
                         </div>
                     </form>
                 </div>
-                <div class="card-footer d-flex justify-content-center">
+                
+                <!-- 작성자와 로그인 사용자가 같은 경우에만 버튼들을 보여줌 -->
+                <div class="card-footer d-flex justify-content-center" th:if="*{author eq #authentication.name}">
                     <button id="btnDelete" class="mx-1 btn btn-danger">삭제</button>
                     <button id="btnUpdate" class="mx-1 btn btn-primary">업데이트</button>
                 </div>

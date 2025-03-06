@@ -42,12 +42,14 @@ public class PostController {
 
 	// @PreAuthorize: 컨트롤러 메서드가 실행되기 전에 인증(로그인 여부) 확인
 	// @PostAuthorize: 컨트롤러 메서드가 실행된 후에 인증 확인
-	@PreAuthorize("isAuthenticated()") // -> isAuthenticated(): 권한 상관없이 아이디/비번 확인
+//	@PreAuthorize("isAuthenticated()") // -> isAuthenticated(): 권한 상관없이 아이디/비번 확인
+	@PreAuthorize("hasRole('USER')") // -> 권한(role)이 USER인 사용자 아이디/비번 인증
 	@GetMapping("/create")
 	public void create() {
 		log.info("GET create()");
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/create")
 	public String create(PostCreateDto dto) {
 		log.info("POST create(dto={})", dto);
@@ -59,6 +61,7 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping({ "/details", "/modify" })
 	public void details(Long id, Model model) {
 		log.info("details(id={})", id);
@@ -72,6 +75,7 @@ public class PostController {
 		// 요청 주소가 modify인 경우는 mnodify.html
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/delete")
 	public String delete(Long id) {
 		log.info("delete(id={})", id);
@@ -82,6 +86,7 @@ public class PostController {
 
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping("/update")
 	public String update(PostUpdateDto dto) {
 		log.info("update(dto={})", dto);

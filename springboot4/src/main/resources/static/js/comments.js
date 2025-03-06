@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const comment of content) {
             htmlStr += `
             <div class="mt-2 card card-body">
-                <div class="mt-2" style="font-size: 0.5em">
+                <div class="mt-2" style="font-size: 0.8em">
                     <span class="fw-bold">${comment.writer}<span>
                     <span class="fw-light text-secondary">${comment.modifiedTime}</span>
                 </div>

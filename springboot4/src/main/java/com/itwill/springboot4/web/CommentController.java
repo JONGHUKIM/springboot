@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class CommentController {
 	
 	private final CommentService commentService;
 	
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/all/{postId}")
 	public ResponseEntity<PagedModel<Comment>> getCommentList(@PathVariable Long postId,
 			@RequestParam(name = "p", defaultValue = "0") int pageNo) {
@@ -46,6 +48,7 @@ public class CommentController {
 		// JSON 직렬화의 안정성을 위해서 Page<T> 객체 대신에 PagedModel<T>을 클라이언트로 응답을 보냄.
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	public ResponseEntity<Comment> registerComment(@RequestBody CommentRegisterDto dto) {
 		log.info("registerComment(dto={})", dto);
@@ -55,6 +58,7 @@ public class CommentController {
 		return ResponseEntity.ok(entity);
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/{commentId}")
 	public ResponseEntity<Long> updateComment(@PathVariable Long commentId,
 			@RequestBody CommentUpdateDto dto) {
@@ -66,6 +70,7 @@ public class CommentController {
 		return ResponseEntity.ok(commentId); // 업데이트한 댓글의 아이디를 응답으로 보냄.
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/{commentId}")
 	public ResponseEntity<Long> deleteComment(@PathVariable Long commentId) {
 		log.info("deleteComment(commentId={})", commentId);
