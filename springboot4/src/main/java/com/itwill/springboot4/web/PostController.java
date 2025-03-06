@@ -2,6 +2,7 @@ package com.itwill.springboot4.web;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,9 @@ public class PostController {
 		model.addAttribute("baseUrl", "/post/list");
 	}
 
+	// @PreAuthorize: 컨트롤러 메서드가 실행되기 전에 인증(로그인 여부) 확인
+	// @PostAuthorize: 컨트롤러 메서드가 실행된 후에 인증 확인
+	@PreAuthorize("isAuthenticated()") // -> isAuthenticated(): 권한 상관없이 아이디/비번 확인
 	@GetMapping("/create")
 	public void create() {
 		log.info("GET create()");

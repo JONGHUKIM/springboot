@@ -3,6 +3,7 @@ package com.itwill.springboot4.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 // -> 스프링 컨테이너에서 생성하고 관리하는 설정 컴포넌트
 // -> 스프링 컨테이너에서 필요한 곳에 의존성 주입해 줄 수 있음 
+
+@EnableMethodSecurity
+// -> 각각의 컨트롤러 메서드에서 인증(로그인), 권한 설정을 하기 위해서 
 public class SecurityConfig {
 
 	// Spring Security 5 버전부터 비밀번호는 반드시 암호화(encoding)를 해야만 함
@@ -63,6 +67,13 @@ public class SecurityConfig {
 		return new InMemoryUserDetailsManager(user1, user2, user3);
 	}
 	
+	/*
+	 * SecurityFilterChain: 스프링 시큐리티 필터 체인 객체(bean)
+	 * - 로그인/로그아웃, 인증 필터에서 필요한 설정들을 구성
+	 * - 로그인 페이지(뷰), 로그아웃 페이지 설정
+	 * - 페이지 접근 권한(ADMIN, USER, ...) 설정
+	 * - 인증 설정(로그인 없이 접근 가능한 페이지 vs 로그인해야만 접근할 수 있는 페이지)
+	 */
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.info("securityFilterChain 생성");
@@ -77,7 +88,20 @@ public class SecurityConfig {
 		http.formLogin((login) -> login.loginPage("/member/signin"));
 		
 		
-		// 페이지 접근 권한, 인증 구성:
+		/*
+		 * 페이지 접근 권한, 인증 구성:
+		 * 아래의 방법 1 또는 방법2 중에서 한가지를 선택
+		 * 1. Http.authorizeHttpRequests(Customizer customizer) 메서드에서 설정
+		 * 	  - Customizer 람다 표현식을 구현
+		 * 	  - 장점: 한 곳에서 모든 설정을 구성할 수 있음
+		 * 	  - 단점: 새로운 요청 경로가 생길 때마다 설정 구성 코드를 수정해야 됨
+		 * 2. 컨트롤러 메서드에서 애너테이션으로 설정
+		 * 	 (1) SecurityConfig 클래스(빈)는 @EnableMethodSecurity 애너테이션을 설정
+		 *   (2) 각각의 컨트롤러 메서드에서 @PreAuthorize 또는 @PostAuthorize 애너테이션을 설정
+		 *   - 장점: 새로운 요청 경로가 생겨도(컨트롤러가 추가되도) Config 클래스는 변경이 불필요
+		 *   - 단점: 모든 설정을 한 곳에서 관리할 수 없음
+		 */
+		/*
 		http.authorizeHttpRequests(t -> 
 		// 모든 요청 주소에 대해서 (권한(role)에 상관없이) 아이디/비밀번호 인증을 하는 경우:
 		// t.anyRequest().authenticated());
@@ -85,13 +109,14 @@ public class SecurityConfig {
 		// 모든 요청 주소에 대해서 "USER" 권한을 가진 사용자의 아이디/비밀번호 인증을 하는 경우:
 		// t.anyRequest().hasRole("USER")
 		
+		// 로그인이 필요한 페이지와 로그인이 필요하지 않은 페이지 설정
 		t.requestMatchers("/post/create", "/post/details", "/post/modify", "/post/delete", "/post/update", "/api/comment/**")
 		.hasRole("USER")
 		.anyRequest()
 		.permitAll()
 		
 		);
-		
+		*/
 		return http.build(); // SecurityFilterChain을 생성해서 리턴ㄴ
 	}
 	
