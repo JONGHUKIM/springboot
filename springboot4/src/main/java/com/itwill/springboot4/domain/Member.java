@@ -1,9 +1,14 @@
 package com.itwill.springboot4.domain;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.NaturalId;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.ElementCollection;
@@ -22,7 +27,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @NoArgsConstructor
@@ -33,7 +40,9 @@ import lombok.ToString;
 // 사용할 것인 지 여부를 설정, 기본값은 false
 @Entity
 @Table(name = "members")
-public class Member extends BaseTimeEntity{
+public class Member extends BaseTimeEntity implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,6 +82,23 @@ public class Member extends BaseTimeEntity{
 	public Member clearRoles() {
 		roles.clear(); //HashSet<MemberRole> roles의 모든 원소를 삭제 
 		return this;
+	}
+
+	// UserDetails 인터페이스의 추상 메서드 구현(재정의)
+	// 스프링 시큐리티 필터들에서 UserDetails 객체의 getAuthorities() 메서드를 호출해서 
+	// 사용자의 권한 여부를 체크하기 때문에 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		log.info("getAuthorities()");
+//		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//		for (MemberRole r : roles) {
+//			SimpleGrantedAuthority auth = new SimpleGrantedAuthority(r.getAutority());
+//			authorities.add(auth);
+//		}
+		
+		List<SimpleGrantedAuthority> authorities = roles.stream().map(r -> new SimpleGrantedAuthority(r.getAutority())).toList();
+		
+		return authorities;
 	}
 	
 }
