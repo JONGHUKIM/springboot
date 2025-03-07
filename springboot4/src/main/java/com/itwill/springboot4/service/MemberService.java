@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwill.springboot4.domain.Member;
+import com.itwill.springboot4.domain.MemberRole;
+import com.itwill.springboot4.dto.MemberSignUpDto;
 import com.itwill.springboot4.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,18 @@ public class MemberService implements UserDetailsService {
 	
 	private final MemberRepository memberRepo;
 	private final PasswordEncoder passwordEncoder;
+	
+	@Transactional
+	public Member create(MemberSignUpDto dto) {
+		log.info("create(dto={})", dto);
+		
+		// USER 권한(역할)을 갖는 엔터티 객체를 생성
+		Member entity = dto.toEntity(passwordEncoder).addRole(MemberRole.USER);
+		entity = memberRepo.save(entity); // 테이블에 저장(insert 쿼리 실행)
+		
+		return entity;
+		
+	}
 	
 	
 	// UserDetailsService 인터페이스의 추상 메서드 구현(재정의)

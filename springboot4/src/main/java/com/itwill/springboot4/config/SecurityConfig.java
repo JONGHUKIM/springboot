@@ -75,7 +75,10 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.info("securityFilterChain 생성");
 		
-		// CSRF 기능 비활성화
+		// CSRF(Cross Site Request Forgery) 기능 비활성화: 
+		// CSRF 기능을 활성화한 경우에는 서버로 요청을 보낼 때 csrf 토큰을 항상 같이 보내야 함
+		// Ajax POST/PUT/DELETE 요청에서 csrf 토큰을 서버로 전송해야하는데, 
+		// Ajax 요청에서 csrf 토큰을 전달하지 않으면 HTTP 403 에러가 발생함 
 		http.csrf((x) -> x.disable());
 		
 		// 로그인 페이지(폼) 설정을 스프링 시큐리티에서 제공하는 기본 HTML 페이지를 사용하도록 설정
