@@ -37,6 +37,16 @@ public class MemberService implements UserDetailsService {
 		
 	}
 	
+	public boolean isUsernameAvailable(String username) {
+		return !memberRepo.findByUsername(username).isPresent();
+	}
+	
+	public boolean isEmailAvailable(String email) {
+	    boolean exists = memberRepo.findByEmail(email).isPresent();
+	    log.info("Email check ({}) -> Available: {}", email, !exists);
+	    return !exists;
+	}
+	
 	
 	// UserDetailsService 인터페이스의 추상 메서드 구현(재정의)
 	// 스프링 시큐리티 필터들에서 loadUserByUsername() 메서드를 사용하기 때문에 반드시 구현

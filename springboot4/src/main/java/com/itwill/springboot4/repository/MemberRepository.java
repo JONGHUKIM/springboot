@@ -19,4 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	// 위와 같이 한번에 모든 정보를 가져옴(eager fetch) 
 	@EntityGraph(attributePaths = "roles")
 	Optional<Member> findByUsername(String username);
+	Optional<Member> findByEmail(String eamil);
 }

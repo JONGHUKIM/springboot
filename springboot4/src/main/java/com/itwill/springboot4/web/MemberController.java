@@ -1,9 +1,11 @@
 package com.itwill.springboot4.web;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwill.springboot4.domain.Member;
 import com.itwill.springboot4.dto.MemberSignUpDto;
@@ -39,6 +41,18 @@ public class MemberController {
 		log.info("회원가입 성공: {}", member);
 		
 		return "redirect:/member/signin"; // 회원가입 성공 후 로그인 페이지로 이동(redirect)
+	}
+	
+	@GetMapping("/check-username")
+	public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+		boolean isAvailable = memberService.isUsernameAvailable(username);
+		return ResponseEntity.ok(isAvailable);
+	}
+	
+	@GetMapping("/check-email")
+	public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+	    boolean isAvailable = memberService.isEmailAvailable(email);
+	    return ResponseEntity.ok(isAvailable);
 	}
 
 }
