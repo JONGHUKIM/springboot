@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.itwill.springboot4.domain.Post;
+import com.itwill.springboot4.dto.PostSearchDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,14 +25,21 @@ public class PostQuerydslTest {
 		log.info("entity={}",entity);
 	}
 	
-	//@Test
+	@Test
 	public void testSearch() {
 		List<Post> result = null;
-		result = postRepo.searchBykeyword("dum");
+//		result = postRepo.searchBykeyword("dum");
+		
+		PostSearchDto dto = new PostSearchDto();
+		dto.setCategory("a");
+		dto.setKeyword("use");
+		result = postRepo.searchByCategoryAndKeyword(dto);
+		
 		result.forEach(System.out::println);
+		
 	}
 	
-	@Test
+	//@Test
 	public void testSearchModifiedTime() {
 		List<Post> result = null;
 		
@@ -42,4 +50,5 @@ public class PostQuerydslTest {
 		result.forEach(System.out::println);		
 		
 	}
+	
 }

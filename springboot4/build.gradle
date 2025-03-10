@@ -76,7 +76,7 @@ tasks.withType(JavaCompile) {
 
 // Gradle task 중에서 클린(clean) 작업 구성 - 자동 생성된 폴더를 지움.
 clean.doLast {
-    file(queryDir).deleteDir()
+    file(querydslDir).deleteDir()
 }
 
 // 프로젝트에서 Querydsl을 사용하기위한 설정

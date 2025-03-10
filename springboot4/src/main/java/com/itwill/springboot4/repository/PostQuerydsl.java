@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.itwill.springboot4.domain.Post;
+import com.itwill.springboot4.dto.PostSearchDto;
 
 public interface PostQuerydsl {
 	
@@ -15,4 +16,7 @@ public interface PostQuerydsl {
 	
 	// 수정시간이 start와 end 사이인 포스트 목록 검색
 	List<Post> searchByModifiedTime(LocalDateTime start, LocalDateTime end);
+	
+	// Dynamic Query(동적 쿼리)
+	List<Post> searchByCategoryAndKeyword(PostSearchDto dto);
 }
