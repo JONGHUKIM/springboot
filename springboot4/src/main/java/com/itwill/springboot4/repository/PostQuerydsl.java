@@ -3,6 +3,9 @@ package com.itwill.springboot4.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.itwill.springboot4.domain.Post;
 import com.itwill.springboot4.dto.PostSearchDto;
 
@@ -19,4 +22,7 @@ public interface PostQuerydsl {
 	
 	// Dynamic Query(동적 쿼리)
 	List<Post> searchByCategoryAndKeyword(PostSearchDto dto);
+	
+	// Page<T> 객체를 리턴하는 Querydsl
+	Page<Post> searchByKeyword(PostSearchDto dto, Pageable pageable);
 }

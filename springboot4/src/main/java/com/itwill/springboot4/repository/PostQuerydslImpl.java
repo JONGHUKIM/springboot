@@ -3,6 +3,9 @@ package com.itwill.springboot4.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import com.itwill.springboot4.domain.Post;
@@ -93,6 +96,46 @@ public class PostQuerydslImpl extends QuerydslRepositorySupport implements PostQ
 		query.where(builder);
 		
 		List<Post> result = query.fetch();		
+		
+		return result;
+	}
+
+	@Override
+	public Page<Post> searchByKeyword(PostSearchDto dto, Pageable pageable) {
+		log.info("searchByKeyword(dto={}, pageable={})", dto, pageable);
+		
+		QPost post = QPost.post;
+		JPQLQuery<Post> query = from(post);
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		String category = dto.getCategory();
+		String keyword = dto.getKeyword();
+		switch (category) {
+		case "t":
+			builder.and(post.title.containsIgnoreCase(keyword));
+			break;
+		case "c":
+			builder.and(post.content.containsIgnoreCase(keyword));
+			break;
+		case "tc":
+			builder.and(post.title.containsIgnoreCase(keyword)).or(post.content.containsIgnoreCase(keyword));
+			break;
+		case "a":
+			builder.and(post.author.containsIgnoreCase(keyword));
+			break;
+		}
+		query.where(builder);
+		
+		// Paging & Sorting 적용
+		getQuerydsl().applyPagination(pageable, query);
+		List<Post> list = query.fetch(); // 한 페이지에 보여줄 컨텐트
+		log.info("list size = {}", list.size());
+		
+		long count = query.fetchCount(); // 전체 레코드 갯수 
+		log.info("fetch count = {}", count);
+		
+		// Page<Post> 객체 생성
+		Page<Post> result = new PageImpl<Post>(list, pageable, count);
 		
 		return result;
 	}
