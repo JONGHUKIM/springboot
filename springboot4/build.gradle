@@ -1,3 +1,9 @@
+buildscript {
+    ext {
+        querydslVersion = '5.1.0'
+    }
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.3'
@@ -29,15 +35,52 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// Lombok 의존성: 
+	compileOnly 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testAnnotaionProcessor 'org.projectlombok:lombok'
+	
+	// Querydsl 의존성:
+	// 작은따옴표(''): 단순 문자열 ${변수이름} 템플릿을 사용할 수 없음
+	// 큰 따옴표(""): 문자열 ${변수이름{ 템플릿을 사용할 수 있음
+	implementation "com.querydsl:queryds-jpa:${querydslVersion}:jakarta"
+	annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}:jakarta"
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+	annotationProcessor 'jakarta.annotation:jakarta.persistence-api'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// Querydsl 관련 빌드 옵션들:
+// Gradle task에서 자동으로 생성되는 자바 코드들이 저장되는 폴더 위치
+def querydslDir = "$buildDir/generated/querydsl"
+
+// 소스 폴더를 빌드 패스에 추가
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+// Gradle task 중에서 자바 컴파일(빌드) 구성
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourceDirectory = file(querydslDir)
+}
+
+// Gradle task 중에서 클린(clean) 작업 구성 - 자동 생성된 폴더를 지움
+clean.doLast {
+    file(queryDir).deleteDir()
+}
+
+// 프로젝트에서 Querydsl을 사용하기 위한 설정
+// 1. build.gradle 파일에서 의존성과 빌드 옵션들을 구성 
+//  (1) Lombok 
+//  (2) Querydsl
+//  (3) 빌드 옵션들
