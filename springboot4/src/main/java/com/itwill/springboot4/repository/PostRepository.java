@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.itwill.springboot4.domain.Post;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, PostQuerydsl {
 
 	// JPA Query Methods
 	// 제목에 포함된 문자열 대소문자 구분없이 검색

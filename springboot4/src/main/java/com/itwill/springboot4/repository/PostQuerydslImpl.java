@@ -24,7 +24,7 @@ public class PostQuerydslImpl extends QuerydslRepositorySupport implements PostQ
 		QPost post = QPost.post;
 		JPQLQuery<Post> query = from(post); // select p from Post p
 		query.where(post.id.eq(id)); // where p.id = ? 
-		Post entity = query.fetchOne();
+		Post entity = query.fetchOne(); // SQL 실행 & 결과처리
 		
 		return entity;
 	}
