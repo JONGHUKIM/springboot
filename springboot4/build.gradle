@@ -84,3 +84,4 @@ clean.doLast {
 //  (1) Lombok 
 //  (2) Querydsl
 //  (3) 빌드 옵션들
+// 2. 프로젝트 이름 오른쪽 클릭 -> Gradle -> Refresh Gradle Project
