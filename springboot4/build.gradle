@@ -85,3 +85,17 @@ clean.doLast {
 //  (2) Querydsl
 //  (3) 빌드 옵션들
 // 2. 프로젝트 이름 오른쪽 클릭 -> Gradle -> Refresh Gradle Project 실행
+// 3. 이클립스 메뉴 window  -> show view -> other -> Gradle -> Gradle task -> Open
+// 4. 이클립스 메뉴 window  -> show view -> other -> Gradle -> Gradle Executions -> Open
+// 5. Gradle Tasks 창 -> 프로젝트(springboot4) -> build -> celan 오른쪽 클릭 -> Run Gradle Tasks 실행
+// 6. Gradle Tasks 창 -> 프로젝트 -> build -> build 오른쪽 클린 -> Run Gradle Tasks 실행
+// 7. 프로젝트 이름 오른쪽 클릭 -> Gradle -> Refresh Gradle Project 실행
+//    - build/gernerated/querydsl 폴더 생성
+//    - 자동 생성된 폴더 밑에 com.itwill.springboot4.domain 패키지 생성
+//    - 패키지 밑에 Q클래스(엔터티 클래스 래퍼)들이 자동으로 생성
+// 8. QueryDsl을 사용하기 위한 인터페이스 선언(예: PostQuerydsl) 
+// 9. 인터페이스를 구현하는 클래스를 작성(예: PostQuerydslImpl)
+//  (1) QuerydslRepositorySupport 클래스 상송
+//     - 상위 클래스의 아규먼트를 갖는 생성자를 명시적으로 호출해야 함
+//  (2) PostQuerydsl 인터페이스 메서드의 몸통(body)를 구현
+// 10. JpaRepository를 상속하는 인터페이스에서 PostQuerydsl 인터페이스를 상속

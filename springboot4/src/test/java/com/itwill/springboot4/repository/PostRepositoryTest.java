@@ -67,7 +67,7 @@ public class PostRepositoryTest {
 		// select 쿼리를 실행 -> delete 쿼리를 실행
 	}
 	
-	@Test
+	//@Test
 	public void makeDummyData() {
 		List<Post> data = new ArrayList<Post>();
 		for (int i = 1; i <= 50; i++) {
